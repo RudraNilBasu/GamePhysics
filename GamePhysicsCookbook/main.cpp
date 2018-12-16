@@ -24,5 +24,8 @@ int main()
                0.0f, -1.0f
     };
     std::cout << m2[1][1] << std::endl;
+
+    std::cout << (right * 4).x << std::endl;
+    std::cout << (right * 4).y << std::endl;
     return 0;
 }
