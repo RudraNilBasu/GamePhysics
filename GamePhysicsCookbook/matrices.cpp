@@ -1,6 +1,7 @@
 #include "matrices.h"
 
 #include <cmath>
+#include <float.h>
 
 /* For details on the float comparison, check
  * http://realtimecollisiondetection.net/pubs/Tolerances/
@@ -115,7 +116,30 @@ mat4 operator*(const mat4& m1, const mat4& m2)
 
 float Determinant(const mat2& matrix)
 {
-    return (matrix._11 * matrix._22) - (matrix._21 * matrix._12);
+    return (matrix._11 * matrix._22) -
+           (matrix._21 * matrix._12);
+}
+
+float Determinant(const mat3& matrix)
+{
+    float result = 0.0f;
+    mat3 cofactor = Cofactor(matrix);
+    for (int i = 0; i < 3; i++) {
+        int index = 3 * 0 + i;
+        result += (matrix.asArray[index] * cofactor[0][i]);
+    }
+    return result;
+}
+
+float Determinant(const mat4& matrix)
+{
+    float result = 0.0f;
+    mat4 cofactor = Cofactor(matrix);
+    for (int i = 0; i < 4; i++) {
+        int index = 4 * 0 + i;
+        result += (matrix.asArray[index] * cofactor[0][i]);
+    }
+    return result;
 }
 
 mat2 Cut(const mat3& source, int x, int y)
@@ -127,6 +151,31 @@ mat2 Cut(const mat3& source, int x, int y)
             if (i == x || j == y)
                 continue;
             result.asArray[index++] = source.asArray[i * 3 + j];
+        }
+    }
+    return result;
+}
+
+mat3 Cut(const mat4& source, int x, int y)
+{
+    int index = 0;
+    mat3 result;
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (i == x || j == y)
+                continue;
+            result.asArray[index++] = source.asArray[i * 4 + j];
+        }
+    }
+    return result;
+}
+
+mat4 Minor(const mat4& matrix)
+{
+    mat4 result;
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            result.asArray[i * 4 + j] = Determinant(Cut(matrix, i, j));
         }
     }
     return result;
@@ -174,4 +223,47 @@ mat3 Cofactor(const mat3& matrix)
     return result;
 }
 
+mat4 Cofactor(const mat4& matrix)
+{
+    mat4 result;
+    Cofactor(result.asArray, matrix.asArray, 4, 4);
+    return result;
+}
+
+mat2 Adjugate(const mat2& matrix)
+{
+    return Transpose(Cofactor(matrix));
+}
+
+mat3 Adjugate(const mat3& matrix)
+{
+    return Transpose(Cofactor(matrix));
+}
+
+mat4 Adjugate(const mat4& matrix)
+{
+    return Transpose(Cofactor(matrix));
+}
+
+mat2 Inverse(const mat2& matrix)
+{
+    // Adjugate / Determinant
+    float det = Determinant(matrix);
+    if (FLOAT_CMP(det, 0.0f)) { return mat2(); }
+    return Adjugate(matrix) * (1.0f / det);
+}
+
+mat3 Inverse(const mat3& matrix)
+{
+    float det = Determinant(matrix);
+    if (FLOAT_CMP(det, 0.0f)) { return mat3(); }
+    return Adjugate(matrix) * (1.0f / det);
+}
+
+mat4 Inverse(const mat4& matrix)
+{
+    float det = Determinant(matrix);
+    if (FLOAT_CMP(det, 0.0f)) { return mat4(); }
+    return Adjugate(matrix) * (1.0f / det);
+}
 

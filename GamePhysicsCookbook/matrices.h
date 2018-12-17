@@ -122,13 +122,28 @@ mat3 operator*(const mat3& m1, const mat3& m2);
 mat4 operator*(const mat4& m1, const mat4& m2);
 
 float Determinant(const mat2& matrix);
+float Determinant(const mat3& matrix);
+float Determinant(const mat4& matrix);
+
 mat2 Cut(const mat3& source, int x, int y);
+mat3 Cut(const mat4& source, int x, int y);
+
+mat4 Minor(const mat4& matrix);
 mat3 Minor(const mat3& matrix);
 mat2 Minor(const mat2& matrix);
 
 void Cofactor(const float* matrix, int row, int col);
 mat2 Cofactor(const mat2& matrix);
 mat3 Cofactor(const mat3& matrix);
+mat4 Cofactor(const mat4& matrix);
+
+mat2 Adjugate(const mat2& matrix);
+mat3 Adjugate(const mat3& matrix);
+mat4 Adjugate(const mat4& matrix);
+
+mat2 Inverse(const mat2& matrix);
+mat3 Inverse(const mat3& matrix);
+mat4 Inverse(const mat4& matrix);
 
 #endif
 
