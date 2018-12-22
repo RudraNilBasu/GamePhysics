@@ -145,5 +145,21 @@ mat2 Inverse(const mat2& matrix);
 mat3 Inverse(const mat3& matrix);
 mat4 Inverse(const mat4& matrix);
 
+/* Transformation */
+
+/* Translation */
+mat4 Translation(float x, float y, float z);
+mat4 Translation(const vec3& pos);
+vec3 GetTranslation(mat4 matrix);
+
+/* Scale */
+mat4 Scale(float x, float y, float z);
+mat4 Scale(const vec3& pos);
+vec3 GetScale(mat4 matrix);
+
+/* Rotation */
+mat4 Rotation(float pitch, float yaw, float roll);
+mat3 Rotation3x3(float pitch, float yaw, float roll);
+
 #endif
 
