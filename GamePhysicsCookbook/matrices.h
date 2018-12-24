@@ -161,5 +161,17 @@ vec3 GetScale(mat4 matrix);
 mat4 Rotation(float pitch, float yaw, float roll);
 mat3 Rotation3x3(float pitch, float yaw, float roll);
 
+mat4 ZRotation(float angle);
+mat3 ZRotation3x3(float angle);
+
+mat4 YRotation(float angle);
+mat3 YRotation3x3(float angle);
+
+mat4 XRotation(float angle);
+mat3 XRotation3x3(float angle);
+
+mat4 AxisAngle(const vec3& axis, float angle);
+mat3 AxisAngle3x3(const vec3& axis, float angle);
+
 #endif
 
