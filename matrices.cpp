@@ -480,3 +480,73 @@ vec3 MultiplyVector(const vec3& vec, const mat3& mat)
     return result;
 }
 
+mat4 Transform(const vec3& scale, const vec3& rotation,
+        const vec3& translation)
+{
+    return Scale(scale.x, scale.y, scale.z) *
+           Rotation(rotation.x, rotation.y, rotation.z) *
+           Translation(translation);
+}
+
+mat4 Transform(const vec3& scale, const vec3& rotateAxis,
+        float rotateAngle, const vec3& translation)
+{
+    return Scale(scale.x, scale.y, scale.z) *
+           AxisAngle(rotateAxis, rotateAngle) *
+           Translation(translation);
+}
+
+// right = x, up = y, forward = z
+mat4 LookAt(const vec3& pos, const vec3& target,
+            const vec3& up)
+{
+    vec3 forward = Normalized(target - pos);
+    vec3 right = Normalized(Cross(up, forward));
+    vec3 newUp = Cross(forward, right);
+
+    return mat4(
+            right.x, newUp.x, forward.x, 0.0f,
+            right.y, newUp.y, forward.y, 0.0f,
+            right.z, newUp.z, forward.z, 0.0f,
+            -Dot(right, pos),
+            -Dot(newUp, pos),
+            -Dot(forward, pos), 1.0f
+            );
+}
+
+// https://www.codeguru.com/cpp/misc/misc/graphics/article.php/c10123/Deriving-Projection-Matrices.htm
+mat4 Projection(float fov, float aspect,
+                float zNear, float zFar)
+{
+    float tanHalfFov = tanf(DEG2RAD(fov * 0.5f));
+    float fovY = 1.0f / tanHalfFov;
+    float fovX = fovY / aspect;
+
+    mat4 result;
+    result._11 = fovX;
+    result._22 = fovY;
+    result._33 = zFar / (zFar - zNear); // far / range
+    result._34 = 1.0f;
+    result._43 = -zNear * result._33; // -near*(far/range)
+    result._44 = 0.0f;
+    return result;
+}
+
+mat4 Ortho(float left, float right, float bottom,
+           float top, float zNear, float zFar)
+{
+    float _11 = 2.0f / (right - left);
+    float _22 = 2.0f / (top - bottom);
+    float _33 = 1.0f / (zFar - zNear);
+    float _41 = (left + right) / (left - right);
+    float _42 = (top + bottom) / (bottom - top);
+    float _43 = (zNear) / (zNear - zFar);
+
+    return mat4(
+            _11, 0.0f, 0.0f, 0.0f,
+            0.0f, _22, 0.0f, 0.0f,
+            0.0f, 0.0f, _33, 0.0f,
+            _41,  _42, _43,  1.0f
+            );
+}
+

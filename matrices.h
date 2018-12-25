@@ -177,5 +177,19 @@ vec3 MultiplyPoint(const vec3& point, const mat4& mat);
 vec3 MultiplyVector(const vec3& vec, const mat4& mat);
 vec3 MultiplyVector(const vec3& vec, const mat3& mat);
 
+mat4 Transform(const vec3& scale, const vec3& rotation,
+        const vec3& translation);
+
+mat4 Transform(const vec3& scale, const vec3& rotateAxis,
+        float rotateAngle, const vec3& translation);
+
+mat4 LookAt(const vec3& pos, const vec3& target,
+            const vec3& up);
+
+mat4 Projection(float fov, float aspect,
+                float zNear, float zFar);
+mat4 Ortho(float left, float right, float bottom,
+           float top, float zNear, float zFar);
+
 #endif
 
