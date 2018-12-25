@@ -173,5 +173,9 @@ mat3 XRotation3x3(float angle);
 mat4 AxisAngle(const vec3& axis, float angle);
 mat3 AxisAngle3x3(const vec3& axis, float angle);
 
+vec3 MultiplyPoint(const vec3& point, const mat4& mat);
+vec3 MultiplyVector(const vec3& vec, const mat4& mat);
+vec3 MultiplyVector(const vec3& vec, const mat3& mat);
+
 #endif
 

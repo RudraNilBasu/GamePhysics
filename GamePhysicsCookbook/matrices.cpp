@@ -447,3 +447,36 @@ mat3 AxisAngle3x3(const vec3& axis, float angle)
             );
 }
 
+vec3 MultiplyPoint(const vec3& point, const mat4& mat)
+{
+    vec3 result;
+    result.x = point.x * mat._11 + point.y * mat._21 +
+               point.z * mat._31 + 1.0f * mat._41;
+    result.y = point.x * mat._12 + point.y * mat._22 +
+               point.z * mat._32 + 1.0f * mat._42;
+    result.z = point.x * mat._13 + point.y * mat._23 +
+               point.z * mat._33 + 1.0f * mat._43;
+    return result;
+}
+
+vec3 MultiplyVector(const vec3& vec, const mat4& mat)
+{
+    vec3 result;
+    result.x = vec.x * mat._11 + vec.y * mat._21 +
+               vec.z * mat._31 + 0.0f * mat._41;
+    result.y = vec.x * mat._12 + vec.y * mat._22 +
+               vec.z * mat._32 + 0.0f * mat._42;
+    result.z = vec.x * mat._13 + vec.y * mat._23 +
+               vec.z * mat._33 + 0.0f * mat._43;
+    return result;
+}
+
+vec3 MultiplyVector(const vec3& vec, const mat3& mat)
+{
+    vec3 result;
+    result.x = Dot(vec, vec3(mat._11, mat._21, mat._31));
+    result.y = Dot(vec, vec3(mat._12, mat._22, mat._32));
+    result.z = Dot(vec, vec3(mat._13, mat._23, mat._33));
+    return result;
+}
+

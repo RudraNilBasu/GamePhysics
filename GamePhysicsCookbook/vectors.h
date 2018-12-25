@@ -58,7 +58,7 @@ bool operator==(const vec3& l, const vec3& r);
 bool operator!=(const vec3& l, const vec3& r);
 
 float Dot(const vec2& l, const vec2& r);
-float Dot(const vec3& l, const vec2& r);
+float Dot(const vec3& l, const vec3& r);
 
 float Magnitude(const vec2& vec);
 float Magnitude(const vec3& vec);
