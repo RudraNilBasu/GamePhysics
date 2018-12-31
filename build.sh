@@ -1,7 +1,7 @@
 echo "Building..."
 # start_time=$(date +%s)
 start_time=$SECONDS
-g++ -std=c++11 vectors.cpp matrices.cpp main.cpp
+g++ -std=c++11 vectors.cpp Geometry2d.cpp matrices.cpp main.cpp
 # end_time=$(date +%s)
 end_time=$SECONDS
 time_taken=$((end_time-start_time))
