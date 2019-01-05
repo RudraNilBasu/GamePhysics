@@ -115,7 +115,7 @@ mat4 operator*(const mat4& matrix, float scalar);
 
 bool Multiply(const float* matA, int aRows, int aCols,
               const float* matB, int bRows, int bCols,
-              const float* out
+              float* out
         );
 mat2 operator*(const mat2& m1, const mat2& m2);
 mat3 operator*(const mat3& m1, const mat3& m2);

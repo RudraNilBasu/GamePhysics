@@ -1,4 +1,5 @@
 #include "Geometry2D.h"
+#include "matrices.h"
 
 #include <cmath>
 #include <cfloat>
@@ -98,5 +99,68 @@ bool PointInOrientedRectangle(const Point2D& point,
             rectangle.halfExtents * 2.0f);
     vec2 localPoint = rotVector + rectangle.halfExtents;
     return PointInRectangle2D(localPoint, localRectangle);
+}
+
+bool CircleLine(const Line2D& line, const Circle& circle)
+{
+    vec2 ab = line.end - line.start;
+    float t = Dot(circle.center - line.start, ab) / Dot(ab, ab);
+
+    if (t < 0.0f || t > 0.0f) {
+        return false;
+    }
+
+    Point2D closestPoint = line.start + ab * t;
+    Line2D circleToClosest(circle.center, closestPoint);
+    return LengthSqr(circleToClosest) < (circle.radius * circle.radius);
+}
+
+bool LineRectangle(const Line2D& line,
+                   const Rectangle2D& rect)
+{
+    if (PointInRectangle2D(line.start, rect) ||
+        PointInRectangle2D(line.end, rect)) {
+        return true;
+    }
+
+    vec2 norm = Normalized(line.end - line.start);
+    norm.x = (norm.x != 0) ? 1.0f / norm.x : 0;
+    norm.y = (norm.y != 0) ? 1.0f / norm.y : 0;
+    vec2 min = (GetMin(rect) - line.start) * norm;
+    vec2 max = (GetMax(rect) - line.start) * norm;
+
+    float tmin = fmaxf(fminf(min.x, max.x), fminf(min.y, max.y));
+    float tmax = fminf(fmaxf(min.x, max.x), fmaxf(min.y, max.y));
+    if (tmax < 0 || tmin > tmax) {
+        return false;
+    }
+    float t = (tmin < 0.0f) ? tmax : tmin;
+    return t > 0.0f && t * t < LengthSqr(line);
+
+}
+
+bool LineOrientedRectangle(const Line2D& line,
+        const OrientedRectangle& rectangle) {
+    float theta = -DEG2RAD(rectangle.rotation);
+    float zRotation2x2[] = {
+        cosf(theta), sinf(theta),
+        -sinf(theta), cosf(theta) };
+    Line2D localLine;
+
+    vec2 rotVector = line.start - rectangle.origin;
+    Multiply(vec2(rotVector.x, rotVector.y).asArray,
+            1, 2,
+            zRotation2x2,
+            2, 2, rotVector.asArray);
+    localLine.start  = rotVector + rectangle.halfExtents;
+    rotVector = line.end - rectangle.origin;
+    Multiply(vec2(rotVector.x, rotVector.y).asArray,
+             1, 2,
+             zRotation2x2,
+             2, 2,
+             rotVector.asArray);
+    localLine.end = rotVector + rectangle.halfExtents;
+    Rectangle2D localRectangle(Point2D(), rectangle.halfExtents * 2.0f);
+    return LineRectangle(localLine, localRectangle);
 }
 
