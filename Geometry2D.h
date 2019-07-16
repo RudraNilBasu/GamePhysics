@@ -66,5 +66,9 @@ bool PointInOrientedRectangle(const Point2D& point,
                               const OrientedRectangle& rectangle);
 
 bool CircleLine(const Line2D& line, const Circle& circle);
+bool LineOrientedRectangle(const Line2D& line, const OrientedRectangle& rectangle);
+bool LineRectangle(const Line2D& line, const Rectangle2D& rect);
+
+bool CircleCircle(const Circle& c1, const Circle& c2);
 #endif
 

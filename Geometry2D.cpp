@@ -164,3 +164,11 @@ bool LineOrientedRectangle(const Line2D& line,
     return LineRectangle(localLine, localRectangle);
 }
 
+bool CircleCircle(const Circle& c1, const Circle& c2)
+{
+    float center_distance_sq = MagnitudeSqr(c1.center - c2.center);
+    float distance_sq = (c1.radius + c2.radius) * (c1.radius + c2.radius);
+
+    return (distance_sq >= center_distance_sq);
+}
+

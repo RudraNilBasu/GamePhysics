@@ -47,5 +47,15 @@ int main()
     std::cout << PointInCircle(inside_p, c) << std::endl;
     inside_p = {3.0f, 0.0f};
     std::cout << PointInCircle(inside_p, c) << std::endl;
+
+    // Test Circle inside Circle
+    Point2D c1_origin = {0.0f, 0.0f};
+    Circle c1(c1_origin, 1.0f);
+    Point2D c2_origin = {2.0f, 0.0f};
+    Circle c2(c2_origin, 1.0f);
+    std::cout << "Test Circle inside Circle" << std::endl;
+    std::cout << c1_origin[0] << "," << c1_origin[1] << std::endl;
+    std::cout << c2_origin[0] << "," << c2_origin[1] << std::endl;
+    std::cout << CircleCircle(c1, c2) << std::endl;
     return 0;
 }
